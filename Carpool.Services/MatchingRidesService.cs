@@ -82,12 +82,16 @@ namespace Carpool.Services
             try
             {
                 OfferRide offerRide = await _offerRidesService.GetOfferRideByUserId(bookingRideReponse.OwnerId);
-                offerRide.AvailableSeats--;
-                offerRide.IsRideBooked = true;
-                offerRide = await _offerRidesService.UpdateOfferRide(offerRide);
                 DBBookedRide dbBookedRide = _mapper.Map<DBBookedRide>(bookingRideReponse);
                 dbBookedRide = await _bookedRidesRepository.Add(dbBookedRide);
                 MatchingRideResponse addedBookedRide = _mapper.Map<MatchingRideResponse>(dbBookedRide);
+                if(addedBookedRide != null)
+                {
+                    offerRide.AvailableSeats--;
+                    offerRide.IsRideBooked = true;
+                    offerRide = await _offerRidesService.UpdateOfferRide(offerRide);
+                }
+               
                 await _unitOfWork.SaveChanges();
                 return addedBookedRide;
             }

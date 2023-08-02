@@ -71,7 +71,7 @@ namespace Carpool.Services
             foreach(OfferRide offerRide in offerRides)
             {
                 User user = await _userDetailsService.GetUserByUserId(userId);
-                if (offerRide.IsRideBooked && offerRide.OwnerId.Equals(user.UserId, StringComparison.Ordinal))
+                if (offerRide.IsRideBooked && offerRide.OwnerId.Equals(user.UserId, StringComparison.OrdinalIgnoreCase))
                 {
                     BookedRide offeredRide = new BookedRide()
                     {
@@ -85,14 +85,13 @@ namespace Carpool.Services
                         Price = offerRide.Price,
                         SeatsBooked = offerRide.AvailableSeats,
                         FirstName = user.FirstName,
-                        LastName = user.LastName
+
                     };
                     offeredRides.Add(offeredRide);
                 } 
             }
             return offeredRides;
         }
-
         public async Task<OfferRide> UpdateOfferRide(OfferRide offerRide)
         {
             DBOfferRide dbOfferRide = _mapper.Map<DBOfferRide>(offerRide);

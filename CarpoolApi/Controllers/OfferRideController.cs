@@ -30,12 +30,12 @@ namespace CarPool.Controllers
                 return StatusCode(500, "Internal Server Error"); 
             }
         }
-        [HttpGet("")]
-        public async Task<IActionResult> GetOfferedRides([FromQuery] string userId)
+        [HttpGet("{ownerId}")]
+        public async Task<IActionResult> GetOfferedRides(string ownerId)
         {
             try
             {  
-                List<BookedRide> result = await _offerRideService.GetOfferedRide(userId);
+                List<BookedRide> result = await _offerRideService.GetOfferedRide(ownerId);
                 return Ok(result); 
             }
             catch (Exception ex)

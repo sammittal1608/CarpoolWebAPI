@@ -23,7 +23,6 @@ namespace Carpool.Services
             await _cityRepository.Add(city);
             return city;
         }
-
         public List<IntermediaryStop> GetAllCities()
         {
            return _cityRepository.GetAll();
