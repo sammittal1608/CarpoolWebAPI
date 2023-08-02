@@ -29,6 +29,8 @@ builder.Services.AddScoped<IUserDetailsRepository, UserDetailsRepository>();
 builder.Services.AddScoped<IBookedRideRepository, BookedRideRepository>();
 builder.Services.AddScoped<IOfferRideRepository, OfferRideRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<ICityRepository, CityRepository>();
+builder.Services.AddScoped<ICityService, CityService>();
 
 builder.Services.AddDbContext<AppDbContext>(option =>
 {

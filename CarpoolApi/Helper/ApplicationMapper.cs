@@ -16,6 +16,8 @@ namespace CarpoolApi.Helper
             //    .ReverseMap() ;
             CreateMap<User,DBUser>()
                 .ReverseMap() ;
+            CreateMap<DBBookedRide, MatchingRideResponse>()
+                .ReverseMap();
         }
     }
 }

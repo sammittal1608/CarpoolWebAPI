@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CarPool.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class BookedRideController : Controller
     {
         IBookedRidesService _bookedRidesService;

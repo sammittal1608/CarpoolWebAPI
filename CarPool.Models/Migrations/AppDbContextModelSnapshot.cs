@@ -24,8 +24,11 @@ namespace CarPool.Models.Migrations
 
             modelBuilder.Entity("CarPool.Data.DBModels.DBBookedRide", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<string>("OwnerId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("AvailableSeats")
+                        .HasColumnType("int");
 
                     b.Property<string>("CustomerId")
                         .IsRequired()
@@ -39,15 +42,30 @@ namespace CarPool.Models.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<float>("Price")
+                        .HasColumnType("real");
+
                     b.Property<string>("Source")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Time")
+                    b.Property<string>("ValidFrom")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.Property<string>("ValidTill")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("OwnerId");
 
                     b.ToTable("BookedRides");
                 });
@@ -137,7 +155,29 @@ namespace CarPool.Models.Migrations
 
                     b.HasIndex("DBOfferRideOwnerId");
 
-                    b.ToTable("IntermediaryStop");
+                    b.ToTable("Cities");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "2547cf1e-6949-4f3c-b800-6541bb91c73f",
+                            Name = "Cincinnati"
+                        },
+                        new
+                        {
+                            Id = "d40ec757-3aba-4c84-b587-322b2cb21057",
+                            Name = "Madinson"
+                        },
+                        new
+                        {
+                            Id = "34518ac6-22a0-44a7-929c-08378da46282",
+                            Name = "Indianapolis"
+                        },
+                        new
+                        {
+                            Id = "45ec80f3-3bdf-47ef-b308-b767a43f122a",
+                            Name = "Chicago"
+                        });
                 });
 
             modelBuilder.Entity("CarPool.Data.IntermediaryStop", b =>

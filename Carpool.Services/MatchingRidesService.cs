@@ -7,14 +7,14 @@ using Carpool.Repository.Interface;
 
 namespace Carpool.Services
 {
-    public class MatchingRidesService:IMatchingRidesService
+    public class MatchingRidesService : IMatchingRidesService
     {
         IOfferRideService _offerRidesService;
         IUserDetailsService _userDetailsService;
         IMapper _mapper;
         IBookedRideRepository _bookedRidesRepository;
         IUnitOfWork _unitOfWork;
-        public MatchingRidesService( IOfferRideService offerRideService, IUserDetailsService userDetailsService, IMapper mapper, IBookedRideRepository bookedRidesRepository, IUnitOfWork unitOfWork)
+        public MatchingRidesService(IOfferRideService offerRideService, IUserDetailsService userDetailsService, IMapper mapper, IBookedRideRepository bookedRidesRepository, IUnitOfWork unitOfWork)
         {
 
             _offerRidesService = offerRideService;
@@ -54,45 +54,49 @@ namespace Carpool.Services
         }
         public bool IsRideMatch(OfferRide offerRide, MatchingRideRequest matchingRideRequest)
         {
-            if (matchingRideRequest.Source != offerRide.Source ||
-                matchingRideRequest.Destination != offerRide.Destination ||
+            if (!string.Equals(matchingRideRequest.Source, offerRide.Source, StringComparison.OrdinalIgnoreCase) ||
+                !string.Equals(matchingRideRequest.Destination, offerRide.Destination, StringComparison.OrdinalIgnoreCase) ||
                 matchingRideRequest.RideValidFrom != offerRide.RideValidFrom ||
                 matchingRideRequest.RideValidTill != offerRide.RideValidTill ||
-                offerRide.AvailableSeats < 1 ||
-                offerRide.IntermediaryStops == null || !offerRide.IntermediaryStops.Any() ||
-                !offerRide.IntermediaryStops.Any(stop => stop.Name == matchingRideRequest.Source) ||
-                !offerRide.IntermediaryStops.Any(stop => stop.Name == matchingRideRequest.Destination))
+                offerRide.AvailableSeats < 1 || !offerRide.Date.Equals(matchingRideRequest.RideDate))
             {
                 return false;
             }
 
-            var sourceStop = offerRide.IntermediaryStops.FirstOrDefault(stop => stop.Name == matchingRideRequest.Source);
-            var destinationStop = offerRide.IntermediaryStops.FirstOrDefault(stop => stop.Name == matchingRideRequest.Destination);
+            //var sourceStop = offerRide.IntermediaryStops.FirstOrDefault(stop => string.Equals(stop.Name, matchingRideRequest.Source, StringComparison.OrdinalIgnoreCase));
+            //var destinationStop = offerRide.IntermediaryStops.FirstOrDefault(stop => string.Equals(stop.Name, matchingRideRequest.Destination, StringComparison.OrdinalIgnoreCase));
 
-            if (destinationStop == null || sourceStop == null)
-            {
-                return false;
-            }
+            //if (destinationStop == null || sourceStop == null)
+            //{
+            //    return false;
+            //}
 
-            var intermediaryStopsList = offerRide.IntermediaryStops.ToList();
-            int sourceIndex = intermediaryStopsList.IndexOf(sourceStop);
-            int destinationIndex = intermediaryStopsList.IndexOf(destinationStop);
+            //var intermediaryStopsList = offerRide.IntermediaryStops.ToList();
+            //int sourceIndex = intermediaryStopsList.IndexOf(sourceStop);
+            //int destinationIndex = intermediaryStopsList.IndexOf(destinationStop);
 
-            return destinationIndex > sourceIndex;
+            return true;
         }
-
-
         public async Task<MatchingRideResponse> AddBookingRide(MatchingRideResponse bookingRideReponse)
         {
-            OfferRide offerRide = await _offerRidesService.GetOfferRideByUserId(bookingRideReponse.OwnerId);
-            offerRide.AvailableSeats--; 
-            offerRide.IsRideBooked = true;
-            await _offerRidesService.UpdateOfferRide(offerRide);
-            DBBookedRide dbBookedRide = _mapper.Map<DBBookedRide>(bookingRideReponse);
-            dbBookedRide = await _bookedRidesRepository.Add(dbBookedRide);
-            MatchingRideResponse addedBookedRide = _mapper.Map<MatchingRideResponse>(dbBookedRide);
-            await _unitOfWork.SaveChanges();
-            return addedBookedRide;
+            try
+            {
+                OfferRide offerRide = await _offerRidesService.GetOfferRideByUserId(bookingRideReponse.OwnerId);
+                offerRide.AvailableSeats--;
+                offerRide.IsRideBooked = true;
+                offerRide = await _offerRidesService.UpdateOfferRide(offerRide);
+                DBBookedRide dbBookedRide = _mapper.Map<DBBookedRide>(bookingRideReponse);
+                dbBookedRide = await _bookedRidesRepository.Add(dbBookedRide);
+                MatchingRideResponse addedBookedRide = _mapper.Map<MatchingRideResponse>(dbBookedRide);
+                await _unitOfWork.SaveChanges();
+                return addedBookedRide;
+            }
+            catch (Exception ex)
+            {
+                
+                throw;
+            }
         }
+
     }
 }

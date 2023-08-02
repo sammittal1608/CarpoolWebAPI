@@ -2,10 +2,12 @@
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace CarPool.Models.Migrations
 {
     /// <inheritdoc />
-    public partial class initi : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -14,16 +16,21 @@ namespace CarPool.Models.Migrations
                 name: "BookedRides",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CustomerId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    OwnerId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Source = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Destination = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Date = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Time = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    ValidFrom = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ValidTill = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CustomerId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AvailableSeats = table.Column<int>(type: "int", nullable: false),
+                    Price = table.Column<float>(type: "real", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BookedRides", x => x.Id);
+                    table.PrimaryKey("PK_BookedRides", x => x.OwnerId);
                 });
 
             migrationBuilder.CreateTable(
@@ -63,7 +70,7 @@ namespace CarPool.Models.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "IntermediaryStop",
+                name: "Cities",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
@@ -72,17 +79,28 @@ namespace CarPool.Models.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_IntermediaryStop", x => x.Id);
+                    table.PrimaryKey("PK_Cities", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_IntermediaryStop_OfferRides_DBOfferRideOwnerId",
+                        name: "FK_Cities_OfferRides_DBOfferRideOwnerId",
                         column: x => x.DBOfferRideOwnerId,
                         principalTable: "OfferRides",
                         principalColumn: "OwnerId");
                 });
 
+            migrationBuilder.InsertData(
+                table: "Cities",
+                columns: new[] { "Id", "DBOfferRideOwnerId", "Name" },
+                values: new object[,]
+                {
+                    { "2547cf1e-6949-4f3c-b800-6541bb91c73f", null, "Cincinnati" },
+                    { "34518ac6-22a0-44a7-929c-08378da46282", null, "Indianapolis" },
+                    { "45ec80f3-3bdf-47ef-b308-b767a43f122a", null, "Chicago" },
+                    { "d40ec757-3aba-4c84-b587-322b2cb21057", null, "Madinson" }
+                });
+
             migrationBuilder.CreateIndex(
-                name: "IX_IntermediaryStop_DBOfferRideOwnerId",
-                table: "IntermediaryStop",
+                name: "IX_Cities_DBOfferRideOwnerId",
+                table: "Cities",
                 column: "DBOfferRideOwnerId");
         }
 
@@ -93,7 +111,7 @@ namespace CarPool.Models.Migrations
                 name: "BookedRides");
 
             migrationBuilder.DropTable(
-                name: "IntermediaryStop");
+                name: "Cities");
 
             migrationBuilder.DropTable(
                 name: "Users");

@@ -1,5 +1,7 @@
 ﻿using CarPool.Data.DBModels;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
 
 namespace CarPool.Data
 {

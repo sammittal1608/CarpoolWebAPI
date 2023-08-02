@@ -16,13 +16,30 @@ namespace Carpool.Repository
             await _dbContext.OfferRides.AddAsync(dbOfferRide);
             return dbOfferRide;
         }
-        public  DBOfferRide Update(DBOfferRide dbOfferRideChanges)
+        public DBOfferRide Update(DBOfferRide dbOfferRideChanges)
         {
-            var dbOfferRide = _dbContext.OfferRides.Attach(dbOfferRideChanges);
-            dbOfferRide.State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-            return dbOfferRideChanges;
+            var existingOfferRide = _dbContext.OfferRides.FirstOrDefault(ride => ride.OwnerId == dbOfferRideChanges.OwnerId);
 
+            if (existingOfferRide != null)
+            {
+
+                existingOfferRide.Source = dbOfferRideChanges.Source;
+                existingOfferRide.Destination = dbOfferRideChanges.Destination;
+                existingOfferRide.Date = dbOfferRideChanges.Date;
+                existingOfferRide.RideValidFrom = dbOfferRideChanges.RideValidFrom;
+                existingOfferRide.RideValidTill = dbOfferRideChanges.RideValidTill;
+                existingOfferRide.AvailableSeats = dbOfferRideChanges.AvailableSeats;
+                existingOfferRide.IntermediaryStops = dbOfferRideChanges.IntermediaryStops;
+                existingOfferRide.Price = dbOfferRideChanges.Price;
+                existingOfferRide.IsRideBooked = dbOfferRideChanges.IsRideBooked;
+                existingOfferRide.CustomerId = dbOfferRideChanges.CustomerId;
+
+                _dbContext.SaveChanges();
+            }
+
+            return existingOfferRide;
         }
+
         public List<DBOfferRide> GetAll()
         {
             List<DBOfferRide> dBOfferRides = _dbContext.OfferRides.ToList();

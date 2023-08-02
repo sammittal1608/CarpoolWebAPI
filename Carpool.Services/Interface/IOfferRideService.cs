@@ -5,8 +5,7 @@ namespace Carpool.Services.Interface
     {
         Task<OfferRide> AddOfferingRide(OfferRide offerRide);
         List<OfferRide> GetAllOfferRides();
-        //Task<OfferRide> DeleteOfferRide(string offerRideId);
-        Task<List<OfferRide>> GetOfferedRide(string userId);
+        Task<List<BookedRide>> GetOfferedRide(string userId);
         Task<OfferRide> UpdateOfferRide(OfferRide offerRide);
         Task<OfferRide> GetOfferRideByUserId(string id);
     }
