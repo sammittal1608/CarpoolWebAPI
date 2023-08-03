@@ -41,6 +41,7 @@ namespace Carpool.Services
                 }
                 
             }
+            offerRide.RideId = Guid.NewGuid().ToString();
             var dbOfferRide = _mapper.Map<DBOfferRide>(offerRide);
             dbOfferRide = await _offerRideRepository.Add(dbOfferRide);
             offerRide = _mapper.Map<OfferRide>(dbOfferRide);

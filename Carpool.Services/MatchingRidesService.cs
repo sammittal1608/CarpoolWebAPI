@@ -82,6 +82,7 @@ namespace Carpool.Services
             try
             {
                 OfferRide offerRide = await _offerRidesService.GetOfferRideByUserId(bookingRideReponse.OwnerId);
+                bookingRideReponse.RideId = offerRide.RideId;
                 DBBookedRide dbBookedRide = _mapper.Map<DBBookedRide>(bookingRideReponse);
                 dbBookedRide = await _bookedRidesRepository.Add(dbBookedRide);
                 MatchingRideResponse addedBookedRide = _mapper.Map<MatchingRideResponse>(dbBookedRide);

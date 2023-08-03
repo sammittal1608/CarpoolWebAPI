@@ -15,13 +15,13 @@ namespace CarPool.Controllers
             _userDetailsService = userDetailsService;
         }
 
-        [HttpGet("Email")]
+        [HttpGet("UserId")]
         [Produces("application/json")]
-        public async Task<IActionResult> GetUserDetails([FromQuery] string Email)
+        public async Task<IActionResult> GetUserDetails([FromQuery] string userId)
         {
             try
             {
-                User userDetails = await _userDetailsService.GetUserDetailsByEmail(Email);
+                User userDetails = await _userDetailsService.GetUserDetailsByEmail(userId);
                 if (userDetails != null)
                 {
                     return Ok(userDetails);
@@ -33,7 +33,7 @@ namespace CarPool.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, "Internal Server Error");
+                return StatusCode(500, "Internal Server Error");    
             }
         }
 

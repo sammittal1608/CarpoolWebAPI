@@ -10,6 +10,7 @@ namespace CarpoolApi.Helper
         {
             CreateMap<OfferRide, DBOfferRide>()
                 .ReverseMap();
+            
             CreateMap<BookedRide, DBBookedRide>()
                 .ReverseMap() ;
             //CreateMap<IntermediaryStop, DBIntermediaryStop>()

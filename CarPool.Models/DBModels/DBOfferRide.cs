@@ -4,6 +4,7 @@ namespace CarPool.Data.DBModels
     public class DBOfferRide
     {
         [Key]
+        public string RideId { get; set; }
         public string OwnerId { get; set; }
         public string Source { get; set; }
         public string Destination { get; set; }

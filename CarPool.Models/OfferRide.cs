@@ -2,6 +2,7 @@
 {
     public class OfferRide
     {
+        public string RideId { get; set; }
         public string OwnerId { get; set; }
         public string Source { get; set; }
         public string Destination { get; set; }

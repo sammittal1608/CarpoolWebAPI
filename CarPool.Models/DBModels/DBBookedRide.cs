@@ -4,6 +4,7 @@ namespace CarPool.Data.DBModels
     public class DBBookedRide
     {
         [Key]
+        public string RideId { get; set; }
         public string OwnerId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }

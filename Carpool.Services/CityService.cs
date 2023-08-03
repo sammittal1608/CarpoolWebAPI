@@ -1,12 +1,6 @@
 ﻿using Carpool.Repository.Interface;
 using Carpool.Services.Interface;
 using CarPool.Data;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Carpool.Services
 {
